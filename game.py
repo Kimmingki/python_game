@@ -32,6 +32,14 @@ to_y = 0
 # 이동 속도
 character_speed = 0.6
 
+# 적 enemy 캐릭터
+enemy = pygame.image.load("/Users/kimminki/Documents/python_game/enemy.png")
+enemy_size = enemy.get_rect().size  # 이미지의 크기를 구해옴
+enemy_width = enemy_size[0]
+enemy_height = enemy_size[1]
+enemy_x_pos = (screen_width / 2) - (enemy_width / 2)  # 화면 가로의 절반에 위치
+enemy_y_pos = (screen_height / 2) - (enemy_height / 2)# 화면 세로의 가장 밑에 위치
+
 # 이벤트 루프
 running = True
 
@@ -42,6 +50,7 @@ while(running):
     for event in pygame.event.get():
         if event.type == pygame.QUIT: # close button
             running = False
+        # 키보드 이벤트
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 to_x -= character_speed
@@ -60,6 +69,8 @@ while(running):
     character_x_pos += to_x * dt
     character_y_pos += to_y * dt
 
+
+    # 경계값 처리
     if character_x_pos < 0:
         character_x_pos = 0
     elif character_x_pos > screen_width - character_width:
@@ -69,8 +80,23 @@ while(running):
     elif character_y_pos > screen_height - character_height:
         character_y_pos = screen_height - character_height
 
+    # 충돌 처리
+    character_rect = character.get_rect()
+    character_rect.left = character_x_pos
+    character_rect.top = character_y_pos
+
+    enemy_rect = enemy.get_rect()
+    enemy_rect.left = enemy_x_pos
+    enemy_rect.top = enemy_y_pos
+
+    # 충돌 체크
+    if character_rect.colliderect(enemy_rect):
+        print("충돌했습니다.")
+        running = False
+
     screen.blit(background, (0, 0))
     screen.blit(character, (character_x_pos, character_y_pos))
+    screen.blit(enemy, (enemy_x_pos, enemy_y_pos))
     pygame.display.update() # 화면 다시 그리기
 
 # 게임 종료
