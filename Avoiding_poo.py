@@ -1,4 +1,5 @@
 import pygame
+import random
 ###################################################### 기본적인 부분
 pygame.init()
 
@@ -29,7 +30,23 @@ character_y_pos = screen_height - character_height
 to_x = 0
 character_speed = 10
 
-enemy = pygame.image.load("/Users/kimminki/Documents/python_game/enemy.png")
+
+ddong = pygame.image.load("/Users/kimminki/Documents/python_game/enemy.png")
+ddong_size = ddong.get_rect().size
+ddong_width = ddong_size[0]
+ddong_height = ddong_size[1]
+ddong_x_pos = random.randint(0, screen_width - ddong_width)
+ddong_y_pos = 0
+ddong_speed = 10
+
+ddong2 = pygame.image.load("/Users/kimminki/Documents/python_game/enemy.png")
+ddong2_size = ddong2.get_rect().size
+ddong2_width = ddong2_size[0]
+ddong2_height = ddong2_size[1]
+ddong2_x_pos = random.randint(0, screen_width - ddong2_width)
+ddong2_y_pos = 0
+ddong2_speed = 7
+
 
 running = True
 
@@ -57,12 +74,42 @@ while(running):
     elif character_x_pos > screen_width - character_width:
         character_x_pos = screen_width - character_width
 
+    ddong_y_pos += ddong_speed
+    ddong2_y_pos += ddong2_speed
+
+    if ddong_y_pos > screen_height:
+        ddong_y_pos = 0
+        ddong_x_pos = random.randint(0, screen_width - ddong_width)
+    if ddong2_y_pos > screen_height:
+        ddong2_y_pos = 0
+        ddong2_x_pos = random.randint(0, screen_width - ddong_width)
 
     # 4. 충돌 처리
+    character_rect = character.get_rect()
+    character_rect.left = character_x_pos
+    character_rect.top = character_y_pos
+
+    ddong_rect = ddong.get_rect()
+    ddong_rect.left = ddong_x_pos
+    ddong_rect.top = ddong_y_pos
+
+    ddong2_rect = ddong2.get_rect()
+    ddong2_rect.left = ddong2_x_pos
+    ddong2_rect.top = ddong2_y_pos
+
+    if character_rect.colliderect(ddong_rect):
+        print("충돌했습니다.")
+        running = False
+    elif character_rect.colliderect(ddong2_rect):
+        print("충돌했습니다.")
+        running = False
+
 
     # 5. 화면에 그리기
     screen.blit(background, (0, 0))
     screen.blit(character, (character_x_pos, character_y_pos))
+    screen.blit(ddong, (ddong_x_pos, ddong_y_pos))
+    screen.blit(ddong2, (ddong2_x_pos, ddong2_y_pos))
     pygame.display.update() # 화면 다시 그리기
 
 # 잠시 대기
