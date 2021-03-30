@@ -1,5 +1,5 @@
 import pygame
-
+###################################################### 기본적인 부분
 pygame.init()
 
 # 화면 크기 조정
@@ -8,10 +8,12 @@ screen_height = 640
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 # 화면 타이틀
-pygame.display.set_caption("Nado Game")
+pygame.display.set_caption("Avoiding poo")
 
 # FPS
 clock = pygame.time.Clock()
+
+######################################################
 
 # 배경 이미지 불러오기
 background = pygame.image.load("/Users/kimminki/Documents/python_game/background.png")
