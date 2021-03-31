@@ -60,7 +60,7 @@ ball_images = [
 ]
 
 # 공의 크기에 따른 최초 속도
-ball_speed_y = [-13, -10, -7, -4]
+ball_speed_y = [-15, -12, -9, -6]
 
 # 공들
 balls = []
@@ -78,10 +78,21 @@ balls.append({
 weapon_to_remove = -1
 ball_to_remove = -1
 
+# Font 정의
+game_font = pygame.font.Font(None, 40)
+total_time = 100
+start_ticks = pygame.time.get_ticks()
+
+# 게임 종료 메세지
+# Time Over (시간 초과 실패)
+# Mission Complete (성공)
+# Game Over (캐릭터 공에 맞음, 실패)
+game_result = "Game Over"
+
 running = True
 
 while(running):
-    dt = clock.tick(60) # FPS
+    dt = clock.tick(30) # FPS
 
     # 2. 이벤트 처리 (키보드, 마우스 등)
     for event in pygame.event.get():
@@ -204,6 +215,11 @@ while(running):
         del weapons[weapon_to_remove]
         weapon_to_remove = -1
 
+    # 모든 공을 없앤 경우 게임 종료 (성공)
+    if len(balls) == 0:
+        game_result = "Mission Complete"
+        running = False
+
     # 5. 화면에 그리기
     screen.blit(background, (0, 0))
     for weapon_x_pos, weapon_y_pos in weapons:
@@ -217,7 +233,24 @@ while(running):
     
     screen.blit(stage, (0, screen_height - stage_height))
     screen.blit(character, (character_x_pos, character_y_pos))
+
+    # 경과 시간 계산
+    elapsed_time = (pygame.time.get_ticks() - start_ticks) / 1000   # ms -> s
+    timer = game_font.render("Time : {}".format(int(total_time - elapsed_time)), True, (255, 255, 255))
+    screen.blit(timer, (10, 10))
+
+    # 시간 초과 시
+    if total_time - elapsed_time <= 0:
+        game_result = "Time Over"
+        running = False
+
     pygame.display.update() # 화면 다시 그리기
+
+# 게임 오버 메세지
+msg = game_font.render(game_result, True, (255, 255, 0))
+msg_rect = msg.get_rect(center = (int(screen_width / 2), int(screen_height / 2)))
+screen.blit(msg, msg_rect)
+pygame.display.update()
 
 # 잠시 대기
 pygame.time.delay(1000) # 2초 정도 대기 (ms)
