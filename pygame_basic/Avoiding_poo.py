@@ -18,9 +18,9 @@ clock = pygame.time.Clock()
 
 # 1. 사용자 게임 초기화 (배경화면, 게임 이미지, 좌표, 속도, 폰트 등)
 
-background = pygame.image.load("/Users/kimminki/Documents/python_game/background.png")
+background = pygame.image.load("/Users/kimminki/Documents/python_game/pygame_basic/background.png")
 
-character = pygame.image.load("/Users/kimminki/Documents/python_game/character.png")
+character = pygame.image.load("/Users/kimminki/Documents/python_game/pygame_basic/character.png")
 character_size = character.get_rect().size
 character_width = character_size[0]
 character_height = character_size[1]
@@ -39,7 +39,7 @@ ddong_x_pos = random.randint(0, screen_width - ddong_width)
 ddong_y_pos = 0
 ddong_speed = 10
 
-ddong2 = pygame.image.load("/Users/kimminki/Documents/python_game/enemy.png")
+ddong2 = pygame.image.load("/Users/kimminki/Documents/python_game/pygame_basic/enemy.png")
 ddong2_size = ddong2.get_rect().size
 ddong2_width = ddong2_size[0]
 ddong2_height = ddong2_size[1]
